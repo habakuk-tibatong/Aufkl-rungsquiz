@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room: Der Kerker der Unmündigkeit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        .glow {
+            text-shadow: 0 0 10px #fbbf24, 0 0 20px #fbbf24;
+        }
+        .station-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid #475569;
+            transition: all 0.3s ease;
+        }
+        .station-card:hover {
+            border-color: #fbbf24;
+        }
+        .hidden-station {
+            display: none;
+        }
+        .modal {
+            background: rgba(15, 23, 42, 0.95);
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .progress-dot.active {
+            border-color: #fbbf24;
+            background: #fbbf24;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="p-6 text-center border-b border-yellow-600/30">
+        <h1 class="text-3xl md:text-4xl font-bold text-yellow-500 glow mb-2">Der Kerker der Unmündigkeit</h1>
+        <p class="text-slate-400 italic">Sammeln Sie alle 10 Buchstaben von "SAPERE AUDE", um die Freiheit zu erlangen.</p>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+        
+        <!-- Status Anzeige -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <div id="prog-1" class="progress-dot">S</div>
+            <div id="prog-2" class="progress-dot">A</div>
+            <div id="prog-3" class="progress-dot">P</div>
+            <div id="prog-4" class="progress-dot">E</div>
+            <div id="prog-5" class="progress-dot">R</div>
+            <div id="prog-6" class="progress-dot">E</div>
+            <div class="w-2"></div>
+            <div id="prog-7" class="progress-dot">A</div>
+            <div id="prog-8" class="progress-dot">U</div>
+            <div id="prog-9" class="progress-dot">D</div>
+            <div id="prog-10" class="progress-dot">E</div>
+        </div>
+
+        <!-- STATION 1: S -->
+        <section id="station-1" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 1: Das Portal</h2>
+            <p class="mb-6 text-slate-300">Wodurch zeichnet sich der Mensch laut Kant primär aus?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(1, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Die Fähigkeit zur Vernunft.</button>
+                <button onclick="checkAnswer(1, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Den blinden Gehorsam gegenüber dem König.</button>
+            </div>
+        </section>
+
+        <!-- STATION 2: A -->
+        <section id="station-2" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 2: Die Fabel</h2>
+            <p class="mb-6 text-slate-300">Was ist das Hauptziel einer aufklärerischen Fabel?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(2, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Reine Unterhaltung ohne tiefere Bedeutung.</button>
+                <button onclick="checkAnswer(2, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Belehrung durch kritische Einsicht.</button>
+            </div>
+        </section>
+
+        <!-- STATION 3: P -->
+        <section id="station-3" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 3: Die Weltanschauung</h2>
+            <p class="mb-6 text-slate-300">Wer behauptete, wir lebten in der „besten aller möglichen Welten“?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(3, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Leibniz</button>
+                <button onclick="checkAnswer(3, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Voltaire</button>
+            </div>
+        </section>
+
+        <!-- STATION 4: E -->
+        <section id="station-4" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 4: Das Wissen</h2>
+            <p class="mb-6 text-slate-300">Welches Mammutprojekt versammelte das Wissen der Zeit?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(4, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Die Enzyklopädie (Diderot/D'Alembert)</button>
+                <button onclick="checkAnswer(4, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Das bürgerliche Gesetzbuch</button>
+            </div>
+        </section>
+
+        <!-- STATION 5: R -->
+        <section id="station-5" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 5: Die Literatur</h2>
+            <p class="mb-6 text-slate-300">Welche Gattung war in der Aufklärung besonders beliebt, um bürgerliche Werte zu zeigen?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(5, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Das Heldenepos</button>
+                <button onclick="checkAnswer(5, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Das bürgerliche Trauerspiel</button>
+            </div>
+        </section>
+
+        <!-- STATION 6: E -->
+        <section id="station-6" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 6: Die Bildung</h2>
+            <p class="mb-6 text-slate-300">Was forderte Christiana Mariana von Ziegler für Frauen?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(6, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Zugang zu wissenschaftlicher Betätigung.</button>
+                <button onclick="checkAnswer(6, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Die Rückkehr zu barocken Traditionen.</button>
+            </div>
+        </section>
+
+        <!-- STATION 7: A -->
+        <section id="station-7" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 7: Der Staat</h2>
+            <p class="mb-6 text-slate-300">Welches Prinzip forderte Montesquieu zur Kontrolle der Macht?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(7, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Gewaltenteilung</button>
+                <button onclick="checkAnswer(7, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Absolutismus</button>
+            </div>
+        </section>
+
+        <!-- STATION 8: U -->
+        <section id="station-8" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 8: Die Rechte</h2>
+            <p class="mb-6 text-slate-300">Wer forderte radikale Gleichheit in der Französischen Revolution?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(8, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Olympe de Gouges</button>
+                <button onclick="checkAnswer(8, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Maria Theresia</button>
+            </div>
+        </section>
+
+        <!-- STATION 9: D -->
+        <section id="station-9" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 9: Die Religion</h2>
+            <p class="mb-6 text-slate-300">Was war der Kern der Ringparabel in Lessings "Nathan der Weise"?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(9, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Die Überlegenheit des Christentums.</button>
+                <button onclick="checkAnswer(9, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) Religiöse Toleranz und Humanität.</button>
+            </div>
+        </section>
+
+        <!-- STATION 10: E -->
+        <section id="station-10" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Station 10: Die Unmündigkeit</h2>
+            <p class="mb-6 text-slate-300">Woran fehlt es laut Kant dem Menschen, der "unmündig" bleibt?</p>
+            <div class="grid gap-3">
+                <button onclick="checkAnswer(10, 'right')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">A) Am Entschluss und am Mut.</button>
+                <button onclick="checkAnswer(10, 'wrong')" class="p-4 text-left border border-slate-700 rounded hover:bg-slate-700">B) An Büchern und Lehrern.</button>
+            </div>
+        </section>
+
+        <!-- FINALE -->
+        <section id="station-final" class="station-card rounded-xl p-6 md:p-10 max-w-2xl mx-auto hidden-station text-center">
+            <h2 class="text-3xl font-bold text-yellow-400 mb-6">Das Finale</h2>
+            <p class="mb-6">Sie haben alle 10 Fragmente gesammelt: <br><span id="code-display" class="font-mono text-3xl text-yellow-500 tracking-widest bg-black px-4 py-2 rounded">_ _ _ _ _ _ _ _ _ _</span></p>
+            <div class="flex flex-col items-center">
+                <input type="text" id="final-input" placeholder="CODE EINGEBEN" class="bg-slate-900 border-2 border-yellow-600 rounded p-4 text-center text-xl mb-4 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <button onclick="unlockFinal()" class="bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 px-10 rounded-full transition-all w-full max-w-xs">ENTRIEGELN</button>
+            </div>
+        </section>
+
+        <!-- ERFOLG -->
+        <div id="success-screen" class="hidden-station text-center mt-10">
+            <h2 class="text-5xl md:text-7xl font-bold text-yellow-400 mb-4 glow animate-pulse">SAPERE AUDE!</h2>
+            <p class="text-xl md:text-2xl text-white mb-8">„Habe Mut, dich deines eigenen Verstandes zu bedienen!“</p>
+            <div class="bg-green-900/40 p-8 rounded-2xl border-2 border-green-500 max-w-xl mx-auto">
+                <p class="text-lg">Sie sind nun ein wahrer Lichtbringer.</p>
+                <button onclick="location.reload()" class="mt-6 text-sm text-yellow-500 underline">Neustart</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="fixed inset-0 modal flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-slate-800 p-8 rounded-xl border-2 border-yellow-600 max-w-sm w-full text-center">
+            <div id="modal-icon" class="text-5xl mb-4">💡</div>
+            <h3 id="modal-title" class="text-2xl font-bold mb-2">Hinweis</h3>
+            <p id="modal-text" class="text-slate-300 mb-6"></p>
+            <button onclick="closeModal()" class="bg-yellow-600 text-black px-6 py-2 rounded font-bold">Weiter</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStation = 1;
+        const totalStations = 10;
+        const targetWord = "SAPERE AUDE";
+        const cleanTarget = targetWord.replace(/\s/g, "");
+        let codeFragments = Array(cleanTarget.length).fill("_");
+
+        function showModal(title, text, isSuccess) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('modal-icon').innerText = isSuccess ? '✨' : '⚠️';
+            document.getElementById('feedback-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+            if (currentStation > totalStations) {
+                document.getElementById(`station-${totalStations}`).classList.add('hidden-station');
+                document.getElementById('station-final').classList.remove('hidden-station');
+            }
+        }
+
+        function checkAnswer(station, type) {
+            if (type === 'right') {
+                const letter = cleanTarget[station-1];
+                codeFragments[station-1] = letter;
+                document.getElementById('code-display').innerText = codeFragments.join(' ');
+                document.getElementById(`prog-${station}`).classList.add('active');
+                
+                showModal("Korrekt!", `Ein weiterer Schritt zum Licht. Buchstabe: ${letter}`, true);
+                
+                document.getElementById(`station-${station}`).classList.add('hidden-station');
+                currentStation++;
+                
+                if (currentStation <= totalStations) {
+                    document.getElementById(`station-${currentStation}`).classList.remove('hidden-station');
+                }
+            } else {
+                showModal("Irrtum!", "Dieser Pfad führt zurück in die Unmündigkeit. Versuchen Sie es erneut!", false);
+            }
+        }
+
+        function unlockFinal() {
+            const input = document.getElementById('final-input').value.toUpperCase().replace(/\s/g, "");
+            if (input === cleanTarget) {
+                document.getElementById('station-final').classList.add('hidden-station');
+                document.getElementById('success-screen').classList.remove('hidden-station');
+            } else {
+                showModal("Blockiert!", "Der Code ist nicht korrekt. Nutzen Sie die gefundenen Buchstaben!", false);
+            }
+        }
+    </script>
+</body>
+</html>
